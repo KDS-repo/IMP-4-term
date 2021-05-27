@@ -1,21 +1,28 @@
 import pickle
 import types
- 
+import json
+import marshal
+
 def create_function(name, args):
     def y(): pass
-    y_code = types.CodeType(args,
-                y.func_code.co_nlocals,
-                y.func_code.co_stacksize,
-                y.func_code.co_flags,
-                y.func_code.co_code,
-                y.func_code.co_consts,
-                y.func_code.co_names,
-                y.func_code.co_varnames,
-                y.func_code.co_filename,
+    print(dir(y))
+    print(dir(y.__code__))
+    print(y.__code__.__dir__())
+    y_code = types.CodeType(y.__code__.co_argcount,
+                y.__code__.co_nlocals,
+                y.__code__.co_stacksize,
+                y.__code__.co_flags,
+                y.__code__.co_code,
+                y.__code__.co_consts,
+                y.__code__.co_names,
+                y.__code__.co_varnames,
+                y.__code__.co_freevars,
+                y.__code__.co_cellvars,
+                y.__code__.co_filename,
                 name,
-                y.func_code.co_firstlineno,
-                y.func_code.co_lnotab)
-    return types.FunctionType(y_code, y.func_globals, name)
+                y.__code__.co_firstlineno,
+                y.__code__.co_lnotab)
+    return types.FunctionType(y_code, y.__globals__, name)
 
 class Attempt(object):
     def func():
@@ -24,56 +31,8 @@ class Attempt(object):
     field2 = 4
 
 def main():
-#    attempt = 35
-#    output = pickle.dumps(attempt)
-#    print(attempt)
-#    print(output)
-    a = Attempt()
-    #creating instance field that covers class attribute
-    a.field = 55
-    print(Attempt.field)
-    print(a.field)
-    #a little mixup to be remembered, the funcname is has ATTR, but looks for fields too
-    print(hasattr(a, "field"))
-    #deleting instance field, revealing class attribute
-    del a.field
-    print(Attempt.field)
-    print(Attempt.func)
-    print(Attempt.__dict__)
-    print(a.field)
-    print(hasattr(a, "field"))
-    
-    exec(Attempt.func.__code__)
-    
-    def newfunc():
-        pass
-    
-    #newfunc = type(Attempt.func.__name__, (), Attempt.func.__dict__)
-    #newfunc()
-    #type(...) doesn't work like that, if it did, it would print
-    #proof - b = newfunc later
-    print(type(Attempt.func))
-    print(dir(Attempt.func))
-    a = getattr(Attempt.func, "__code__")
-    print("code\n", a)
-    setattr(newfunc, "__code__", a)
-    #for part in dir(Attempt.func):
-        #print(part)
-        #print(hasattr(Attempt.func, part))
-        #if(hasattr(Attempt.func, part)):
-            #a = getattr(Attempt.func, part)
-            #print(a)
-            #setattr(newfunc, part, a)
-        
-    print(newfunc)
-    newfunc()
-    b = newfunc
-    b()
-    
-    #f_dict = dir(Attempt.func)
-    #a = create_function("FuncName", f_dict)
-    
-    
+    a = create_function("attempt", ())
+    a()
     
 if __name__ == "__main__":
     main()
