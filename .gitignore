@@ -167,9 +167,6 @@ Thumbs.db #thumbnail cache on Windows
 # End of https://www.toptal.com/developers/gitignore/api/linux,python
 
 # Dan, personal additions
-flake8
 gittask.run
-Makefile
-pylintrc
 pyvenv.cfg
 requirements.txt
