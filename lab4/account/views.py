@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
 
+import threading
+
 @login_required
 def dashboard(request):
     return render(request, 'account/dashboard.html', {'section': 'dashboard'})
@@ -16,7 +18,8 @@ def user_login(request):
             user = authenticate(username=cd['username'], password=cd['password'])
             if user is not None:
                 if user.is_active:
-                    login(request, user)
+                    t = threading.Thread(target = login, args = (request, user))
+                    t.start()
                     return HttpResponse('Authenticated successfully')
                 else:
                     return HttpResponse('Disabled account')
@@ -72,9 +75,9 @@ def edit(request):
         user_form = UserEditForm(instance=request.user, data=request.POST)
         profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request, 'Profile updated successfully')
+            t1 = threading.Thread(user_form.save, ())
+            t2 = threading.Thread(profile_form.save, ())
+            t3 = threading.Thread(messages.success, (request, 'Profile updated successfully'))
         else:
             messages.error(request, 'Error updating your profile')
     else:
