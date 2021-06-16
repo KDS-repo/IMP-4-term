@@ -1,0 +1,7 @@
+version: "3.3"
+services:
+  web:
+    image: elrichjr/imp-4-term
+    command: python3 manage.py runserver
+    ports:
+      - "5000:5000"
