@@ -15,5 +15,5 @@ RUN mkdir /usr/sbin/app
 WORKDIR /usr/sbin/app
 ADD requirements.txt /usr/sbin/app/
 RUN pip install -r requirements.txt
-ADD . /usr/sbin/app/
+ADD . /usr/sbin/app
 EXPOSE 5000
