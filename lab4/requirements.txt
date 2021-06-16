@@ -1,3 +1,1 @@
-flask
-redis
-django
+django==1.8.6

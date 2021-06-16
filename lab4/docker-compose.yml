@@ -3,9 +3,7 @@ services:
   web:
     build: .
     command: python3 manage.py runserver
-    ports:
-      - "5000:5000"
     volumes:
       - .:/usr/sbin/app
-    environment:
-      FLASK_ENV: development
+    ports:
+      - "5000:5000"
